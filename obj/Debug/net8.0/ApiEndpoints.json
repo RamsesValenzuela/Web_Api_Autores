@@ -1,15 +1,15 @@
 [
   {
-    "ContainingType": "Web_Api_Autores.Controllers.WeatherForecastController",
+    "ContainingType": "Web_Api_Autores.Controllers.AutoresController",
     "Method": "Get",
-    "RelativePath": "WeatherForecast",
+    "RelativePath": "api/autores",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[Web_Api_Autores.WeatherForecast, Web_Api_Autores, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[Web_Api_Autores.Entidades.Autor, Web_Api_Autores, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -17,7 +17,6 @@
         ],
         "StatusCode": 200
       }
-    ],
-    "EndpointName": "GetWeatherForecast"
+    ]
   }
 ]
