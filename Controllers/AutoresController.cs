@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Web_Api_Autores.Entidades;
+using Web_Api_Autores.Servicios;
 
 namespace Web_Api_Autores.Controllers
 {
@@ -11,10 +12,12 @@ namespace Web_Api_Autores.Controllers
     public class AutoresController : ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly IServicio servicio;
 
-        public AutoresController(ApplicationDbContext context)
+        public AutoresController(ApplicationDbContext context, IServicio servicio)
         {
             this.context = context;
+            this.servicio = servicio;
         }
 
         [HttpGet]
@@ -22,6 +25,7 @@ namespace Web_Api_Autores.Controllers
         [HttpGet("/listado")] //Se sobreEscribe la ruta api/autores y pasa a ser solo /listado sin necesidad de rutear la api/autores
         public async Task<List<Autor>> Get()
         {
+            servicio.RealizarTarea();
             return  await context.Autores.Include(x => x.Libros).ToListAsync ();
         }
 

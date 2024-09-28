@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography.Xml;
 using System.Text.Json.Serialization;
+using Web_Api_Autores.Controllers;
+using Web_Api_Autores.Servicios;
 
 namespace Web_Api_Autores
 {
@@ -19,7 +21,12 @@ namespace Web_Api_Autores
 
             services.AddEndpointsApiExplorer();
 
+            
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+
+            services.AddTransient<IServicio, ServicioA>();
+
+
             services.AddSwaggerGen();
         }
 
