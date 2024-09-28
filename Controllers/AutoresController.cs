@@ -7,7 +7,7 @@ namespace Web_Api_Autores.Controllers
 {
 
     [ApiController]
-    [Route("api/autores")]
+    [Route("api/[controller]")] //Cuando se pone entre corchetes se toma el nombre de controlador como nomrbe de la ruta
     public class AutoresController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -18,10 +18,47 @@ namespace Web_Api_Autores.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Autor>>> Get()
+        [HttpGet("listado")] //api/autores/listado
+        [HttpGet("/listado")] //Se sobreEscribe la ruta api/autores y pasa a ser solo /listado sin necesidad de rutear la api/autores
+        public async Task<List<Autor>> Get()
         {
-            return await context.Autores.Include(x => x.Libros).ToListAsync();
+            return  await context.Autores.Include(x => x.Libros).ToListAsync();
         }
+
+        [HttpGet("primero")] //Con solo poner entre los parentesis agregas un parametro mas al URL donde cambia api/autores/primero
+        public async Task<ActionResult<Autor>> PrimerAutor()
+        {
+            return await context.Autores.FirstOrDefaultAsync();
+        }
+
+
+        [HttpGet("{id:int}")]//Se entra a la ruta mediante una variable que tiene en la url 
+        public async Task<ActionResult<Autor>> Get(int id)
+        {
+            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (autor == null) { 
+                return NotFound();
+            }
+
+            return autor;
+
+        }
+
+        [HttpGet("{nombre}")]//Se entra a la ruta mediante una variable que tiene en la url 
+        public async Task<ActionResult<Autor>> Get(string nombre)
+        {
+            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Nombre.Contains(nombre));
+
+            if (autor == null)
+            {
+                return NotFound();
+            }
+
+            return autor;
+
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> Post(Autor autor)
