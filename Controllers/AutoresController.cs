@@ -13,11 +13,32 @@ namespace Web_Api_Autores.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IServicio servicio;
+        private readonly ServicioTransient servicioTransient;
+        private readonly ServicioSingleton servicioSingleton;
+        private readonly ServicioScoped servicioScoped;
 
-        public AutoresController(ApplicationDbContext context, IServicio servicio)
+        public AutoresController(ApplicationDbContext context, IServicio servicio,
+            ServicioTransient servicioTransient, ServicioSingleton servicioSingleton
+            , ServicioScoped servicioScoped)
         {
             this.context = context;
             this.servicio = servicio;
+            this.servicioTransient = servicioTransient;
+            this.servicioSingleton = servicioSingleton;
+            this.servicioScoped = servicioScoped;
+        }
+
+
+        [HttpGet("Guid")]
+        public ActionResult ObtenerGuid()
+        {
+            return Ok(new
+            {
+                AutoresControllerTransient = servicioTransient.guid,
+                AutoresControllerSingleton = servicioSingleton.guid,
+                AutoresControllerScoped = servicioScoped.guid,
+
+            });
         }
 
         [HttpGet]
