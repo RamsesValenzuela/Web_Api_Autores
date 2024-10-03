@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography.Xml;
 using System.Text.Json.Serialization;
 using Web_Api_Autores.Controllers;
+using Web_Api_Autores.Middleware;
 using Web_Api_Autores.Servicios;
 
 namespace Web_Api_Autores
@@ -24,14 +25,28 @@ namespace Web_Api_Autores
             
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
 
-            services.AddTransient<IServicio, ServicioA>();
+            services.AddTransient<ServicioTransient>();
+            services.AddScoped<ServicioScoped>();
+            services.AddSingleton<ServicioSingleton>();
 
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(); 
         }
 
-        public void Configurate(IApplicationBuilder app,  IWebHostEnvironment env) 
+        public void Configurate(IApplicationBuilder app,  IWebHostEnvironment env, ILogger<Startup>logger) 
         {
+
+            app.UseMiddleware<LoggearRespuestaHTTPMiddleware>();
+  
+                
+            app.Map("/ruta1", app =>
+            {
+                app.Run(async contexto =>
+                {
+                    await contexto.Response.WriteAsync("Estoy haciendo lo mismo");
+                });
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
