@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Web_Api_Autores.DTO;
 using Web_Api_Autores.Entidades;
-using Web_Api_Autores.Servicios;
+
 
 namespace Web_Api_Autores.Controllers
 {
@@ -12,49 +14,28 @@ namespace Web_Api_Autores.Controllers
     public class AutoresController : ControllerBase
     {
         private readonly ApplicationDbContext context;
-        private readonly IServicio servicio;
-        private readonly ServicioTransient servicioTransient;
-        private readonly ServicioSingleton servicioSingleton;
-        private readonly ServicioScoped servicioScoped;
+        private readonly IMapper mapper;
 
-        public AutoresController(ApplicationDbContext context, IServicio servicio,
-            ServicioTransient servicioTransient, ServicioSingleton servicioSingleton
-            , ServicioScoped servicioScoped)
+        public AutoresController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
-            this.servicio = servicio;
-            this.servicioTransient = servicioTransient;
-            this.servicioSingleton = servicioSingleton;
-            this.servicioScoped = servicioScoped;
+            this.mapper = mapper;
         }
 
-
-        [HttpGet("Guid")]
-        public ActionResult ObtenerGuid()
-        {
-            return Ok(new
-            {
-                AutoresControllerTransient = servicioTransient.guid,
-                AutoresControllerSingleton = servicioSingleton.guid,
-                AutoresControllerScoped = servicioScoped.guid,
-
-            });
-        }
 
         [HttpGet]
-        [HttpGet("listado")] //api/autores/listado
-        [HttpGet("/listado")] //Se sobreEscribe la ruta api/autores y pasa a ser solo /listado sin necesidad de rutear la api/autores
+        //[HttpGet("listado")] //api/autores/listado
+        //[HttpGet("/listado")] //Se sobreEscribe la ruta api/autores y pasa a ser solo /listado sin necesidad de rutear la api/autores
         public async Task<List<Autor>> Get()
         {
-            servicio.RealizarTarea();
-            return  await context.Autores.Include(x => x.Libros).ToListAsync ();
+            return  await context.Autores.ToListAsync ();
         }
 
-        [HttpGet("primero")] //Con solo poner entre los parentesis agregas un parametro mas al URL donde cambia api/autores/primero
-        public async Task<ActionResult<Autor>> PrimerAutor([FromHeader] int miValor, [FromQuery] string nombre)
-        {
-            return await context.Autores.FirstOrDefaultAsync();
-        }
+        //[HttpGet("primero")] //Con solo poner entre los parentesis agregas un parametro mas al URL donde cambia api/autores/primero
+        //public async Task<ActionResult<Autor>> PrimerAutor([FromHeader] int miValor, [FromQuery] string nombre)
+        //{
+        //    return await context.Autores.FirstOrDefaultAsync();
+        //}
 
 
         [HttpGet("{id:int}")]//Se entra a la ruta mediante una variable que tiene en la url 
@@ -87,14 +68,17 @@ namespace Web_Api_Autores.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Post(Autor autor)
+        public async Task<ActionResult> Post([FromBody] AutorCreacionDTO autorCreacionDTO)
         {
-            var existAutor = await context.Autores.AnyAsync(x => x.Nombre == autor.Nombre);
+            var existAutor = await context.Autores.AnyAsync(x => x.Nombre == autorCreacionDTO.Nombre);
 
             if (existAutor)
             {
-                return BadRequest($"Ya existe un autor con el nombre {autor.Nombre}");
+                return BadRequest($"Ya existe un autor con el nombre {autorCreacionDTO.Nombre}");
             }
+
+            var autor = mapper.Map<Autor>(autorCreacionDTO);
+
 
             context.Add(autor);
             await context.SaveChangesAsync();
