@@ -28,8 +28,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "autor",
-        "Type": "Web_Api_Autores.Entidades.Autor",
+        "Name": "autorCreacionDTO",
+        "Type": "Web_Api_Autores.DTO.AutorCreacionDTO",
         "IsRequired": true
       }
     ],
@@ -115,119 +115,6 @@
     "ReturnTypes": [
       {
         "Type": "Web_Api_Autores.Entidades.Autor",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Web_Api_Autores.Controllers.AutoresController",
-    "Method": "Get",
-    "RelativePath": "api/Autores/listado",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.List\u00601[[Web_Api_Autores.Entidades.Autor, Web_Api_Autores, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Web_Api_Autores.Controllers.AutoresController",
-    "Method": "PrimerAutor",
-    "RelativePath": "api/Autores/primero",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "miValor",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "nombre",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Web_Api_Autores.Entidades.Autor",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Web_Api_Autores.Controllers.LibrosController",
-    "Method": "Post",
-    "RelativePath": "api/libros",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "libro",
-        "Type": "Web_Api_Autores.Entidades.Libro",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Web_Api_Autores.Controllers.LibrosController",
-    "Method": "Get",
-    "RelativePath": "api/libros/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Web_Api_Autores.Entidades.Libro",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Web_Api_Autores.Controllers.AutoresController",
-    "Method": "Get",
-    "RelativePath": "listado",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.List\u00601[[Web_Api_Autores.Entidades.Autor, Web_Api_Autores, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
