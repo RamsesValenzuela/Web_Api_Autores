@@ -24,46 +24,35 @@ namespace Web_Api_Autores.Controllers
 
 
         [HttpGet]
-        //[HttpGet("listado")] //api/autores/listado
-        //[HttpGet("/listado")] //Se sobreEscribe la ruta api/autores y pasa a ser solo /listado sin necesidad de rutear la api/autores
-        public async Task<List<Autor>> Get()
+        public async Task<List<AutorDTO>> Get()
         {
-            return  await context.Autores.ToListAsync ();
+            var autores = await context.Autores.ToListAsync ();
+
+            return mapper.Map<List<AutorDTO>>(autores);
         }
 
-        //[HttpGet("primero")] //Con solo poner entre los parentesis agregas un parametro mas al URL donde cambia api/autores/primero
-        //public async Task<ActionResult<Autor>> PrimerAutor([FromHeader] int miValor, [FromQuery] string nombre)
-        //{
-        //    return await context.Autores.FirstOrDefaultAsync();
-        //}
 
 
         [HttpGet("{id:int}")]//Se entra a la ruta mediante una variable que tiene en la url 
-        public async Task<ActionResult<Autor>> Get(int id)
+        public async Task<ActionResult<AutorDTO>> Get(int id)
         {
 
             var autor = await context.Autores.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (autor == null) { 
-                return NotFound();
-            }
-
-            return autor;
-
-        }
-
-        [HttpGet("{nombre}")]//Se entra a la ruta mediante una variable que tiene en la url 
-        public async Task<ActionResult<Autor>> Get(string nombre)
-        {
-            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Nombre.Contains(nombre));
 
             if (autor == null)
             {
                 return NotFound();
             }
 
-            return autor;
+            return mapper.Map<AutorDTO>(autor);
+        }
 
+        [HttpGet("{nombre}")]//Se entra a la ruta mediante una variable que tiene en la url 
+        public async Task<ActionResult<List<AutorDTO>>> Get([FromRoute]string nombre)
+        {
+            var autores = await context.Autores.Where(x => x.Nombre.Contains(nombre)).ToListAsync();
+
+            return mapper.Map<List<AutorDTO>>(autores);
         }
 
 
