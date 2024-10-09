@@ -51,7 +51,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "Web_Api_Autores.DTO.AutorDTO",
+        "Type": "Web_Api_Autores.DTO.AutorDTOConLibro",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -156,7 +156,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "Web_Api_Autores.DTO.LibroDTO",
+        "Type": "Web_Api_Autores.DTO.LibroDTOconAutores",
         "MediaTypes": [
           "text/plain",
           "application/json",

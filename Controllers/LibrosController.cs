@@ -21,7 +21,7 @@ namespace Web_Api_Autores.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<LibroDTO>> Get(int id)
+        public async Task<ActionResult<LibroDTOconAutores>> Get(int id)
         {
             var libro =  await context.Libros
                 .Include(LibroDB => LibroDB.AutoresLibros)
@@ -30,7 +30,7 @@ namespace Web_Api_Autores.Controllers
 
             libro.AutoresLibros = libro.AutoresLibros.OrderBy(x => x.Orden).ToList();
 
-            return mapper.Map<LibroDTO>(libro);
+            return mapper.Map<LibroDTOconAutores>(libro);
         }
 
         [HttpPost]
