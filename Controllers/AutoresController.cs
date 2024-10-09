@@ -34,17 +34,20 @@ namespace Web_Api_Autores.Controllers
 
 
         [HttpGet("{id:int}")]//Se entra a la ruta mediante una variable que tiene en la url 
-        public async Task<ActionResult<AutorDTO>> Get(int id)
+        public async Task<ActionResult<AutorDTOConLibro>> Get(int id)
         {
 
-            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Id == id);
+            var autor = await context.Autores
+                .Include(autorDB => autorDB.AutoresLibros )
+                .ThenInclude(autorLibroDB => autorLibroDB.Libro)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (autor == null)
             {
                 return NotFound();
             }
 
-            return mapper.Map<AutorDTO>(autor);
+            return mapper.Map<AutorDTOConLibro>(autor);
         }
 
         [HttpGet("{nombre}")]//Se entra a la ruta mediante una variable que tiene en la url 
