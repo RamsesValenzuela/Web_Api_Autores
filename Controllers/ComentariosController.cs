@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Web_Api_Autores;
 using Web_Api_Autores.DTO;
 using Web_Api_Autores.Entidades;
+using Web_Api_Autores.Migrations;
 
 namespace Web_Api_Autores.Controllers
 {
@@ -26,7 +27,7 @@ namespace Web_Api_Autores.Controllers
         }
 
         // GET: api/Comentarios
-        [HttpGet]
+        [HttpGet()]
         public async Task<ActionResult<List<ComentarioDTO>>> Get(int libroId)
         {
             var existe = await _context.Libros.AnyAsync(libroDB => libroDB.Id == libroId);
@@ -39,18 +40,18 @@ namespace Web_Api_Autores.Controllers
          }
 
         //// GET: api/Comentarios/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Comentario>> GetComentario(int id)
-        //{
-        //    var comentario = await _context.Comentarios.FindAsync(id);
+        [HttpGet("{id=int}", Name ="obtenerComentario")]
+        public async Task<ActionResult<List<ComentarioDTO>>> GetComentario(int id)
+        {
+            var comentario = await _context.Comentarios.Where(x => x.LibroId == id).FirstOrDefaultAsync(x => x.Id == id);
 
-        //    if (comentario == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (comentario == null)
+            {
+                return NotFound();
+            }
 
-        //    return comentario;
-        //}
+            return mapper.Map<List<ComentarioDTO>>(comentario);
+        }
 
         //// PUT: api/Comentarios/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -100,7 +101,10 @@ namespace Web_Api_Autores.Controllers
             comentario.LibroId = libroId;
             _context.Add(comentario);
             await _context.SaveChangesAsync();
-            return Ok();
+
+            var comentarioDto = mapper.Map<ComentarioDTO>(comentario);
+
+            return CreatedAtRoute("obtenerComentarios", new { id = comentario.Id}, comentarioDto);
         }
 
         //// DELETE: api/Comentarios/5
