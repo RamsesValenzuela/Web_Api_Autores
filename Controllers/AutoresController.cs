@@ -33,7 +33,7 @@ namespace Web_Api_Autores.Controllers
 
 
 
-        [HttpGet("{id:int}")]//Se entra a la ruta mediante una variable que tiene en la url 
+        [HttpGet("{id:int}", Name = "obtenerAutor")]//Se entra a la ruta mediante una variable que tiene en la url 
         public async Task<ActionResult<AutorDTOConLibro>> Get(int id)
         {
 
@@ -74,7 +74,10 @@ namespace Web_Api_Autores.Controllers
 
             context.Add(autor);
             await context.SaveChangesAsync();
-            return Ok();
+
+            var autorDto = mapper.Map<AutorDTO>(autor);
+
+            return CreatedAtRoute("obtenerAutor", new {autor.Id}, autorDto);
         }
 
         [HttpPut("{id:int}")] //Mediante el ruteo de los parametros se actualiza mediante el parametro id
