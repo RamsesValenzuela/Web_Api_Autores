@@ -71,8 +71,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "autor",
-        "Type": "Web_Api_Autores.Entidades.Autor",
+        "Name": "autorCreacionDto",
+        "Type": "Web_Api_Autores.DTO.AutorCreacionDTO",
         "IsRequired": true
       },
       {
@@ -246,5 +246,31 @@
       }
     ],
     "EndpointName": "obtenerComentario"
+  },
+  {
+    "ContainingType": "Web_Api_Autores.Controllers.ComentariosController",
+    "Method": "PutComentario",
+    "RelativePath": "api/libros/{libroId}/comentarios/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "libroId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "comentarioCreacionDTO",
+        "Type": "Web_Api_Autores.DTO.ComentarioCreacionDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
