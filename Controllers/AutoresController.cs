@@ -81,12 +81,8 @@ namespace Web_Api_Autores.Controllers
         }
 
         [HttpPut("{id:int}")] //Mediante el ruteo de los parametros se actualiza mediante el parametro id
-         public async Task<ActionResult> Put(Autor autor, int id)
+         public async Task<ActionResult> Put(AutorCreacionDTO autorCreacionDto, int id)
         {
-            if(autor.Id != id)
-            {
-                return BadRequest("El id del autort no coincide con el id de la URL");
-            }
 
             var exist = await context.Autores.AnyAsync(x => x.Id == id);
 
@@ -95,10 +91,15 @@ namespace Web_Api_Autores.Controllers
                 return NotFound("El id del autor no coicide con el id del URL");
             }
 
+            var autor = mapper.Map<Autor>(autorCreacionDto);
+
+            autor.Id = id; 
+
+
 
             context.Update(autor);
             await context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
 
         }
 
