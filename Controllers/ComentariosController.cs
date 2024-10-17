@@ -55,36 +55,35 @@ namespace Web_Api_Autores.Controllers
 
         //// PUT: api/Comentarios/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutComentario(int libroId, ComentarioCreacionDTO comentarioCreacionDTO)
-        //{
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> PutComentario(int libroId, int id ,ComentarioCreacionDTO comentarioCreacionDTO)
+        {
 
-        //    var existe = await _context.Libros.AnyAsync(libroDB => libroDB.Id == libroId);
-        //    if (!existe)
-        //    {
-        //        return BadRequest();
-        //    }
+            var existe = await _context.Libros.AnyAsync(libroDB => libroDB.Id == libroId);
+            if (!existe)
+            {
+                return NotFound();
+            }
 
-        //    _context.Entry(comentario).State = EntityState.Modified;
+            var existeComent = await _context.Comentarios.AnyAsync(ComentarioDB => ComentarioDB.Id == id);
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ComentarioExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            if (!existeComent)
+            {
+                return NotFound();
+            }
 
-        //    return NoContent();
-        //}
+            var comentario = mapper.Map<Comentario>(comentarioCreacionDTO);
+
+            comentario.Id = id;
+
+            comentario.LibroId = libroId;
+
+            _context.Update(comentario);
+
+             await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
         // POST: api/Comentarios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
